@@ -69,3 +69,9 @@ dialog.reward-dialog{padding:0;width:calc(100% - 30px);max-width:570px;max-heigh
 @font-face{font-family:'Fredoka';src:url('assets/fredoka-semibold.ttf') format('truetype');font-style:normal;font-weight:600;font-display:swap}
 .map-panel .drop-label .country-label{font-family:'Fredoka','Trebuchet MS',sans-serif;font-size:17px;font-weight:600;fill:#243b61}
 .map-panel .drop-label .answer{font-family:'Fredoka','Trebuchet MS',sans-serif;font-size:17px;font-weight:600}
+
+/* Independent music and feedback controls. */
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.audio-toggle{padding:10px 12px;border:2px solid #cdbbea;border-radius:12px;background:#fff;color:#7142ad;font-weight:800;box-shadow:0 3px 0 #d8c9ee;font-size:.85rem}
+.audio-toggle[aria-pressed="true"]{background:#f4eaff;border-color:#9663cc;color:#63349c}
+@media(max-width:640px){.topbar{flex-wrap:wrap;gap:12px}.header-actions{width:100%;justify-content:space-between;gap:6px}.audio-toggle,.header-actions .reset{padding:9px 8px;font-size:.78rem}}

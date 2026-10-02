@@ -19,8 +19,8 @@ function choose(id){if(solved[stage].has(id))return;selected=selected===id?null:
 function drop(id,target){
  if(!country(id)||!country(target))return {correct:false,reason:'Unknown country'};
  if(solved[stage].has(id))return {correct:false,reason:'Already matched'};
- if(id!==target){setFeedback('Not quite! Try another place.','try');const el=$('.piece[data-id="'+id+'"]');el?.classList.add('shake');setTimeout(()=>el?.classList.remove('shake'),350);return {correct:false};}
- solved[stage].add(id);selected=null;render();const c=country(id);
+ if(id!==target){window.UKAudio?.play('wrong');setFeedback('Not quite! Try another place.','try');const el=$('.piece[data-id="'+id+'"]');el?.classList.add('shake');setTimeout(()=>el?.classList.remove('shake'),350);return {correct:false};}
+ solved[stage].add(id);window.UKAudio?.play('correct');selected=null;render();const c=country(id);
  setFeedback(stage===0?'You found '+c.name+'! '+associations[c.id]:stage===1?c.capital+' is the capital of '+c.name+'.':c.id==='ni'?'Well done! The Union Flag is used here.':'Great! That is the flag of '+c.name+'.','good');
  if(solved[stage].size===4)setFeedback(stage===2?'All 12 matches complete! Your passport is ready.':'Mission complete! Ready for the next one?','good');
  return {correct:true,...state()};
@@ -53,7 +53,7 @@ function render(){
 }
 function reset(){stage=0;selected=null;solved=[new Set(),new Set(),new Set()];order=[shuffle(countries.map(c=>c.id)),shuffle(countries.map(c=>c.id)),shuffle(countries.map(c=>c.id))];$('#win').open&&$('#win').close();render();setFeedback('Pick a piece and find its place!');}
 function switchStage(n){if(n<0||n>2||n>0&&solved[n-1].size!==4)return false;stage=n;selected=null;render();setFeedback('Pick a card and find its place!');return true;}
-function celebrate(){ $('#win').showModal();for(let i=0;i<45;i++){const el=document.createElement('i');el.className='confetti';el.style.left=Math.random()*100+'%';el.style.background=['#ef627c','#f7c13b','#38a97c','#8660d0','#459dc9'][i%5];el.style.animationDelay=Math.random()*.6+'s';document.body.append(el);setTimeout(()=>el.remove(),3600);}}
+function celebrate(){ window.UKAudio?.play('win');$('#win').showModal();for(let i=0;i<45;i++){const el=document.createElement('i');el.className='confetti';el.style.left=Math.random()*100+'%';el.style.background=['#ef627c','#f7c13b','#38a97c','#8660d0','#459dc9'][i%5];el.style.animationDelay=Math.random()*.6+'s';document.body.append(el);setTimeout(()=>el.remove(),3600);}}
 $('#reset').onclick=reset;$('#win-reset').onclick=reset;$('#review').onclick=()=>$('#win').close();$$('[data-stage]').forEach(el=>el.onclick=()=>switchStage(+el.dataset.stage));$('#next').onclick=()=>{if(solved[stage].size!==4)return;if(stage<2)switchStage(stage+1);else celebrate();};
 $('#cards').addEventListener('click',e=>{const el=e.target.closest('.piece');if(el&&!suppressClick&&!el.disabled)choose(el.dataset.id);});
 $('#map').addEventListener('click',e=>{const target=e.target.closest('[data-country]');if(target&&selected)drop(selected,target.dataset.country);});
